@@ -106,7 +106,7 @@ const projects = [
     title: "Helen O'Grady International Preschool",
     category: 'Education', 
     image: 'https://drive.google.com/thumbnail?id=1YravZP9shbAQ-ALIY5jryBK02QWSjqvO&sz=w1000', 
-    logo: '/preschool-logo.png',
+    logo: '/preschool-logo.jpg',
     director: {
       name: 'Arpita Mittal',
       image: 'https://drive.google.com/thumbnail?id=11ukvWBrthmRZkLj4t9nQx4nPZNmRrTVS&sz=w500',
