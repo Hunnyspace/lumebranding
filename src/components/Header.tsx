@@ -26,8 +26,8 @@ export default function Header() {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        isScrolled 
-          ? 'py-4 glass shadow-2xl' 
+        isScrolled || mobileMenuOpen
+          ? 'py-4 bg-black/80 backdrop-blur-xl shadow-2xl border-b border-white/10' 
           : 'py-6 bg-gradient-to-b from-black/80 to-transparent'
       }`}
     >
@@ -90,33 +90,3 @@ export default function Header() {
         <motion.div 
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="absolute top-full left-0 right-0 glass-panel border-t border-white/10 p-6 flex flex-col gap-4 md:hidden"
-        >
-          {navLinks.map((link) => (
-            <a
-              key={link.name}
-              href={link.href}
-              onClick={() => {
-                soundManager.play('tap');
-                setMobileMenuOpen(false);
-              }}
-              className="text-lg font-medium text-white/80 hover:text-white"
-            >
-              {link.name}
-            </a>
-          ))}
-          <a
-            href="#contact"
-            onClick={() => {
-              soundManager.play('tap');
-              setMobileMenuOpen(false);
-            }}
-            className="mt-4 px-6 py-3 text-center rounded-full platinum-btn transition-all duration-300 text-base font-semibold"
-          >
-            Start Project
-          </a>
-        </motion.div>
-      )}
-    </header>
-  );
-}
