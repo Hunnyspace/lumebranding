@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Menu, X } from 'lucide-react';
+import { soundManager } from '../lib/sounds';
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -24,17 +25,23 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'py-4 glass border-b border-white/10' : 'py-6 bg-transparent'
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        isScrolled 
+          ? 'py-4 glass shadow-2xl' 
+          : 'py-6 bg-gradient-to-b from-black/80 to-transparent'
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-        <a href="#home" className="flex items-center gap-3 group">
+        <a 
+          href="#home" 
+          className="flex items-center gap-3 group"
+          onClick={() => soundManager.play('tap')}
+        >
           <div className="relative h-8 md:h-10 w-auto overflow-hidden transition-colors">
             <img 
               src="https://drive.google.com/thumbnail?id=1v1MwcKVris98yvhhS4SAoX3qDqckK47i&sz=w1000" 
               alt="LUME Logo" 
-              className="h-full w-auto object-contain"
+              className="h-full w-auto object-contain brightness-125"
               referrerPolicy="no-referrer"
             />
           </div>
@@ -46,7 +53,11 @@ export default function Header() {
             <a
               key={link.name}
               href={link.href}
-              className="text-sm font-medium text-white/70 hover:text-white transition-colors relative group"
+              onMouseEnter={() => soundManager.play('hover')}
+              onClick={() => soundManager.play('tap')}
+              className={`text-sm font-medium transition-all duration-300 relative group ${
+                isScrolled ? 'text-white' : 'text-white/80'
+              } hover:text-white`}
             >
               {link.name}
               <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-full"></span>
@@ -54,6 +65,8 @@ export default function Header() {
           ))}
           <a
             href="#contact"
+            onMouseEnter={() => soundManager.play('hover')}
+            onClick={() => soundManager.play('tap')}
             className="px-6 py-2.5 rounded-full platinum-btn transition-all duration-300 text-sm"
           >
             Start Project
@@ -63,7 +76,10 @@ export default function Header() {
         {/* Mobile Menu Toggle */}
         <button 
           className="md:hidden text-white"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          onClick={() => {
+            soundManager.play('tap');
+            setMobileMenuOpen(!mobileMenuOpen);
+          }}
         >
           {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
@@ -80,7 +96,10 @@ export default function Header() {
             <a
               key={link.name}
               href={link.href}
-              onClick={() => setMobileMenuOpen(false)}
+              onClick={() => {
+                soundManager.play('tap');
+                setMobileMenuOpen(false);
+              }}
               className="text-lg font-medium text-white/80 hover:text-white"
             >
               {link.name}
@@ -88,7 +107,10 @@ export default function Header() {
           ))}
           <a
             href="#contact"
-            onClick={() => setMobileMenuOpen(false)}
+            onClick={() => {
+              soundManager.play('tap');
+              setMobileMenuOpen(false);
+            }}
             className="mt-4 px-6 py-3 text-center rounded-full platinum-btn transition-all duration-300 text-base font-semibold"
           >
             Start Project

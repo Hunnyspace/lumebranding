@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowRight, CheckCircle2 } from 'lucide-react';
+import { soundManager } from '../lib/sounds';
 
 const steps = [
   { id: 1, title: 'Basics' },
@@ -32,14 +33,17 @@ export default function ContactForm() {
   });
 
   const handleNext = () => {
+    soundManager.play('tap');
     if (currentStep < 5) setCurrentStep(prev => prev + 1);
   };
 
   const handlePrev = () => {
+    soundManager.play('tap');
     if (currentStep > 1) setCurrentStep(prev => prev - 1);
   };
 
   const toggleService = (service: string) => {
+    soundManager.play('tap');
     setFormData(prev => ({
       ...prev,
       services: prev.services.includes(service)
@@ -50,6 +54,7 @@ export default function ContactForm() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    soundManager.play('success');
     
     const message = `Hey LUME Branding! I'm interested in starting a project.
     
@@ -152,6 +157,7 @@ ${formData.description}`;
                         <button
                           key={service}
                           type="button"
+                          onMouseEnter={() => soundManager.play('hover')}
                           onClick={() => toggleService(service)}
                           className={`p-4 rounded-xl border text-left transition-all duration-300 ${
                             formData.services.includes(service)
@@ -175,7 +181,11 @@ ${formData.description}`;
                         <button
                           key={range}
                           type="button"
-                          onClick={() => setFormData({...formData, budget: range})}
+                          onMouseEnter={() => soundManager.play('hover')}
+                          onClick={() => {
+                            soundManager.play('tap');
+                            setFormData({...formData, budget: range});
+                          }}
                           className={`p-6 rounded-xl border text-center text-lg font-medium transition-all duration-300 ${
                             formData.budget === range
                               ? 'platinum-btn shadow-[0_0_15px_rgba(255,255,255,0.2)]'

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, Award, CheckCircle2, Image as ImageIcon, ChevronLeft, ChevronRight } from 'lucide-react';
+import { soundManager } from '../lib/sounds';
 
 const categories = ['All', 'Education', 'Beauty', 'Healthcare'];
 
@@ -161,10 +162,32 @@ export default function Portfolio() {
   const [activeCategory, setActiveCategory] = useState('All');
   const [selectedProject, setSelectedProject] = useState<any>(null);
   const [currentGalleryIndex, setCurrentGalleryIndex] = useState(0);
+  const [activeProjectId, setActiveProjectId] = useState<number | null>(null);
 
   const filteredProjects = activeCategory === 'All' 
     ? projects 
     : projects.filter(p => p.category === activeCategory);
+
+  const handleProjectClick = (project: any) => {
+    if (window.innerWidth < 768) {
+      if (activeProjectId === project.id) {
+        // If already active, open case study
+        soundManager.play('tap');
+        setSelectedProject(project);
+        setCurrentGalleryIndex(0);
+        setActiveProjectId(null);
+      } else {
+        // Just activate hover state
+        soundManager.play('hover');
+        setActiveProjectId(project.id);
+      }
+    } else {
+      // Desktop behavior
+      soundManager.play('tap');
+      setSelectedProject(project);
+      setCurrentGalleryIndex(0);
+    }
+  };
 
   const nextImage = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -193,7 +216,11 @@ export default function Portfolio() {
             {categories.map(cat => (
               <button
                 key={cat}
-                onClick={() => setActiveCategory(cat)}
+                onMouseEnter={() => soundManager.play('hover')}
+                onClick={() => {
+                  soundManager.play('tap');
+                  setActiveCategory(cat);
+                }}
                 className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
                   activeCategory === cat 
                     ? 'platinum-btn' 
@@ -216,7 +243,8 @@ export default function Portfolio() {
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95, y: 20 }}
                 transition={{ duration: 0.5, ease: "easeOut" }}
-                className="group relative flex flex-col gap-6"
+                className={`group relative flex flex-col gap-6 cursor-pointer transition-all duration-300 ${activeProjectId === project.id ? 'scale-[1.02]' : ''}`}
+                onClick={() => handleProjectClick(project)}
               >
                 {/* Browser Mockup Frame */}
                 <div className="relative rounded-2xl overflow-hidden glass border border-white/10 shadow-2xl shadow-black/50">
@@ -253,21 +281,15 @@ export default function Portfolio() {
                     </div>
                     
                     {/* Hover Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/60 to-transparent opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity duration-500 flex flex-col justify-end p-8">
-                      <div className="translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                    <div className={`absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/60 to-transparent transition-opacity duration-500 flex flex-col justify-end p-8 ${activeProjectId === project.id ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
+                      <div className={`transition-transform duration-500 ${activeProjectId === project.id ? 'translate-y-0' : 'translate-y-4 group-hover:translate-y-0'}`}>
                         <span className="px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-xs font-medium text-white/80 mb-3 inline-block border border-white/10">
                           {project.category}
                         </span>
                         <h3 className="text-2xl font-heading font-bold text-white mb-4">{project.title}</h3>
-                        <button 
-                          onClick={() => {
-                            setSelectedProject(project);
-                            setCurrentGalleryIndex(0);
-                          }}
-                          className="px-6 py-2 rounded-full platinum-btn text-sm font-semibold flex items-center gap-2 transition-all hover:scale-105 w-fit"
-                        >
+                        <div className="px-6 py-2 rounded-full platinum-btn text-sm font-semibold flex items-center gap-2 transition-all hover:scale-105 w-fit">
                           View Case Study <span className="text-lg">→</span>
-                        </button>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -329,7 +351,10 @@ export default function Portfolio() {
                 className="relative w-full max-w-6xl bg-[#0a0a0a] rounded-3xl overflow-hidden border border-white/10 shadow-2xl flex flex-col md:flex-row max-h-[90vh]"
               >
                 <button 
-                  onClick={() => setSelectedProject(null)}
+                  onClick={() => {
+                    soundManager.play('tap');
+                    setSelectedProject(null);
+                  }}
                   className="absolute top-6 right-6 z-10 w-10 h-10 rounded-full glass flex items-center justify-center text-white hover:bg-white/10 transition-all"
                 >
                   <X size={20} />
@@ -353,13 +378,19 @@ export default function Portfolio() {
                   {selectedProject.gallery.length > 1 && (
                     <>
                       <button 
-                        onClick={prevImage}
+                        onClick={(e) => {
+                          soundManager.play('tap');
+                          prevImage(e);
+                        }}
                         className="absolute left-4 w-12 h-12 rounded-full glass flex items-center justify-center text-white opacity-0 group-hover/gallery:opacity-100 transition-opacity"
                       >
                         <ChevronLeft size={24} />
                       </button>
                       <button 
-                        onClick={nextImage}
+                        onClick={(e) => {
+                          soundManager.play('tap');
+                          nextImage(e);
+                        }}
                         className="absolute right-4 w-12 h-12 rounded-full glass flex items-center justify-center text-white opacity-0 group-hover/gallery:opacity-100 transition-opacity"
                       >
                         <ChevronRight size={24} />
@@ -424,7 +455,11 @@ export default function Portfolio() {
                     </div>
 
                     <button 
-                      onClick={nextImage}
+                      onMouseEnter={() => soundManager.play('hover')}
+                      onClick={(e) => {
+                        soundManager.play('tap');
+                        nextImage(e);
+                      }}
                       className="w-full py-4 rounded-xl platinum-btn flex items-center justify-center gap-2"
                     >
                       Show Next Image <ImageIcon size={18} />

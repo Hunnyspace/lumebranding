@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowRight, Play } from 'lucide-react';
+import { soundManager } from '../lib/sounds';
 
 const quotes = [
   "We don't just design — we engineer attention.",
@@ -71,6 +72,8 @@ export default function Hero() {
           <div className="flex flex-wrap items-center gap-4 pt-2">
             <a 
               href="#contact" 
+              onMouseEnter={() => soundManager.play('hover')}
+              onClick={() => soundManager.play('tap')}
               className="group relative px-8 py-4 platinum-btn rounded-full overflow-hidden transition-all flex items-center gap-2"
             >
               Start Your Project
@@ -78,6 +81,8 @@ export default function Hero() {
             </a>
             <a 
               href="#work" 
+              onMouseEnter={() => soundManager.play('hover')}
+              onClick={() => soundManager.play('tap')}
               className="group px-8 py-4 platinum-btn rounded-full flex items-center gap-2"
             >
               <Play size={18} className="fill-black group-hover:fill-black transition-colors" />
