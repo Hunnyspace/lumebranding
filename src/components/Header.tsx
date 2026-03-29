@@ -90,3 +90,33 @@ export default function Header() {
         <motion.div 
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
+          className="absolute top-full left-0 right-0 bg-black/95 backdrop-blur-2xl border-t border-b border-white/10 p-6 flex flex-col gap-4 md:hidden h-screen shadow-2xl pb-32"
+        >
+          {navLinks.map((link) => (
+            <a
+              key={link.name}
+              href={link.href}
+              onClick={() => {
+                soundManager.play('tap');
+                setMobileMenuOpen(false);
+              }}
+              className="text-lg font-medium text-white/80 hover:text-white"
+            >
+              {link.name}
+            </a>
+          ))}
+          <a
+            href="#contact"
+            onClick={() => {
+              soundManager.play('tap');
+              setMobileMenuOpen(false);
+            }}
+            className="mt-4 px-6 py-3 text-center rounded-full platinum-btn transition-all duration-300 text-base font-semibold"
+          >
+            Start Project
+          </a>
+        </motion.div>
+      )}
+    </header>
+  );
+}
