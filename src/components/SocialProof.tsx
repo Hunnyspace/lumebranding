@@ -9,6 +9,7 @@ const clientLogos = [
   { name: 'Helen O’Grady', url: 'https://drive.google.com/thumbnail?id=1b_KSc9jHdwRfk2YCceXklwhEcCaG4AT_&sz=w500' },
   { name: 'Syamala Homoeopathy', url: 'https://drive.google.com/thumbnail?id=1nHSoc1BNbmaGZ0f04AXMLykpYIkCclVs&sz=w500' },
   { name: 'Nucleus International', url: 'https://drive.google.com/thumbnail?id=1owZZ2q_oSQlMV2rqkNe9XBMq7TCqZKaw&sz=w500' },
+  { name: 'The Skin 1st Clinic', url: 'https://drive.google.com/thumbnail?id=1J00Npebg84oTa9Ut8Vk-h_4ATaBs03_n&sz=w500', bg: 'bg-black' },
 ];
 
 export default function SocialProof() {
@@ -79,8 +80,8 @@ export default function SocialProof() {
         <div className="py-12 animate-marquee flex items-center gap-20 whitespace-nowrap">
           {[...clientLogos, ...clientLogos, ...clientLogos].map((logo, index) => (
             <div key={index} className="flex items-center gap-6 group px-4">
-              {/* White Background Frame */}
-              <div className="bg-white p-3 md:p-4 rounded-xl shadow-lg shadow-black/20 flex items-center justify-center h-14 md:h-20 w-auto min-w-[100px] transition-transform duration-500 group-hover:scale-105">
+              {/* Background Frame */}
+              <div className={`${logo.bg || 'bg-white'} p-3 md:p-4 rounded-xl shadow-lg shadow-black/20 flex items-center justify-center h-14 md:h-20 w-auto min-w-[100px] transition-transform duration-500 group-hover:scale-105`}>
                 <img 
                   src={logo.url} 
                   alt={logo.name} 

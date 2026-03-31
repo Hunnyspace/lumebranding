@@ -3,24 +3,45 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { Volume2, VolumeX } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import CursorGlow from './components/CursorGlow';
 import Header from './components/Header';
-import Hero from './components/Hero';
-import SocialProof from './components/SocialProof';
-import About from './components/About';
-import Services from './components/Services';
-import Portfolio from './components/Portfolio';
-import ContactForm from './components/ContactForm';
-import Careers from './components/Careers';
-import FAQ from './components/FAQ';
 import Footer from './components/Footer';
 import GamePage from './components/GamePage';
 import GreetingModal from './components/GreetingModal';
+import RecentWorkPopup from './components/RecentWorkPopup';
 import Preloader from './components/Preloader';
 import { soundManager } from './lib/sounds';
+
+import Home from './pages/Home';
+import ServicesPage from './pages/ServicesPage';
+import PortfolioPage from './pages/PortfolioPage';
+import CreatorsPage from './pages/CreatorsPage';
+import ReferPage from './pages/ReferPage';
+import ContactPage from './pages/ContactPage';
+import CareersPage from './pages/CareersPage';
+
+function ScrollHandler() {
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.hash) {
+      setTimeout(() => {
+        const element = document.getElementById(location.hash.slice(1));
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [location]);
+
+  return null;
+}
 
 export default function App() {
   const [showGame, setShowGame] = useState(false);
@@ -71,25 +92,27 @@ export default function App() {
   }
 
   return (
-    <div className="bg-[#050505] min-h-screen text-white selection:bg-white/20">
-      <CursorGlow />
-      <Header />
-      <GreetingModal />
-      
-      <main>
-        <Hero />
-        <SocialProof />
-        <About />
-        <Services />
-        <Portfolio />
-        <Careers />
-        <ContactForm />
-        <FAQ />
-      </main>
+    <Router>
+      <ScrollHandler />
+      <div className="bg-[#050505] min-h-screen text-white selection:bg-white/20">
+        <CursorGlow />
+        <Header />
+        <GreetingModal />
+        <RecentWorkPopup />
+        
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/services" element={<ServicesPage />} />
+          <Route path="/work" element={<PortfolioPage />} />
+          <Route path="/creators" element={<CreatorsPage />} />
+          <Route path="/refer" element={<ReferPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/careers" element={<CareersPage />} />
+        </Routes>
 
-      <Footer />
+        <Footer />
 
-      {/* Apple-style Music Toggle */}
+        {/* Apple-style Music Toggle */}
       <motion.button 
         onClick={toggleMusic}
         initial={false}
@@ -151,5 +174,6 @@ export default function App() {
         </span>
       </motion.button>
     </div>
+    </Router>
   );
 }

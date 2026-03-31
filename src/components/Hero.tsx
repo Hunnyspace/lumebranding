@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowRight, Play } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { soundManager } from '../lib/sounds';
 
 const quotes = [
@@ -70,24 +71,24 @@ export default function Hero() {
           </div>
 
           <div className="flex flex-wrap items-center gap-4 pt-2">
-            <a 
-              href="#contact" 
+            <Link 
+              to="/contact" 
               onMouseEnter={() => soundManager.play('hover')}
               onClick={() => soundManager.play('tap')}
               className="group relative px-8 py-4 platinum-btn rounded-full overflow-hidden transition-all flex items-center gap-2"
             >
               Start Your Project
               <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-            </a>
-            <a 
-              href="#work" 
+            </Link>
+            <Link 
+              to="/work" 
               onMouseEnter={() => soundManager.play('hover')}
               onClick={() => soundManager.play('tap')}
               className="group px-8 py-4 platinum-btn rounded-full flex items-center gap-2"
             >
               <Play size={18} className="fill-black group-hover:fill-black transition-colors" />
               View Portfolio
-            </a>
+            </Link>
           </div>
         </motion.div>
 

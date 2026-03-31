@@ -44,6 +44,7 @@ export default function Services() {
           {services.map((service, index) => (
             <motion.div
               key={service.title}
+              id={service.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}

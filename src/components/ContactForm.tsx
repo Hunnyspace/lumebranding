@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowRight, CheckCircle2 } from 'lucide-react';
+import { jsPDF } from 'jspdf';
 import { soundManager } from '../lib/sounds';
 
 const steps = [
@@ -56,6 +57,90 @@ export default function ContactForm() {
     e.preventDefault();
     soundManager.play('success');
     
+    // Generate PDF
+    const doc = new jsPDF();
+    
+    // Add Header
+    doc.setFillColor(5, 5, 5);
+    doc.rect(0, 0, 210, 40, 'F');
+    
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(24);
+    doc.setFont('helvetica', 'bold');
+    doc.text('LUME BRANDING', 20, 25);
+    
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'normal');
+    doc.text('Project Inquiry', 150, 25);
+    
+    doc.setTextColor(100, 100, 100);
+    doc.text(`Date: ${new Date().toLocaleDateString()}`, 20, 55);
+    
+    doc.setTextColor(0, 0, 0);
+    doc.setFontSize(12);
+    
+    let yPos = 75;
+    const lineHeight = 7;
+    const valueX = 50;
+    const maxLineWidth = 140;
+    
+    const addField = (label: string, value: string) => {
+      if (yPos > 250) {
+        doc.addPage();
+        yPos = 20;
+      }
+      
+      doc.setFont('helvetica', 'bold');
+      doc.text(`${label}:`, 20, yPos);
+      doc.setFont('helvetica', 'normal');
+      
+      // Handle multi-line text
+      const splitText = doc.splitTextToSize(value || 'N/A', maxLineWidth);
+      doc.text(splitText, valueX, yPos);
+      yPos += (splitText.length * lineHeight) + 5;
+    };
+    
+    addField('Name', formData.name);
+    addField('Business', formData.businessName);
+    addField('Services', formData.services.join(', '));
+    addField('Budget', formData.budget);
+    addField('Call Time', formData.callTime);
+    addField('Details', formData.description);
+    
+    // Add Legal Terms
+    yPos += 10;
+    if (yPos > 220) {
+      doc.addPage();
+      yPos = 20;
+    }
+    
+    doc.setDrawColor(200, 200, 200);
+    doc.line(20, yPos, 190, yPos);
+    yPos += 10;
+    
+    doc.setFontSize(10);
+    doc.setTextColor(100, 100, 100);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Terms & Conditions:', 20, yPos);
+    yPos += 6;
+    
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8);
+    const terms = [
+      "1. This inquiry does not constitute a binding agreement or contract between the parties.",
+      "2. All information provided will be kept strictly confidential and used solely for project evaluation.",
+      "3. LUME Branding reserves the right to decline any project inquiry at its sole discretion.",
+      "4. Any estimates or budgets discussed are preliminary and subject to change upon formal scoping."
+    ];
+    
+    terms.forEach(term => {
+      const splitTerm = doc.splitTextToSize(term, 170);
+      doc.text(splitTerm, 20, yPos);
+      yPos += (splitTerm.length * 4) + 2;
+    });
+    
+    doc.save(`LUME_Project_Inquiry_${formData.name.replace(/\s+/g, '_')}.pdf`);
+
     const message = `Hey LUME Branding! I'm interested in starting a project.
     
 *Name:* ${formData.name}
@@ -131,7 +216,7 @@ ${formData.description}`;
                         value={formData.name}
                         onChange={(e) => setFormData({...formData, name: e.target.value})}
                         className="w-full bg-white/5 border border-white/10 rounded-xl px-6 py-4 text-white focus:outline-none focus:border-white/50 focus:bg-white/10 transition-all"
-                        placeholder="John Doe"
+                        placeholder="Enter your full name"
                       />
                     </div>
                     <div>
@@ -142,7 +227,7 @@ ${formData.description}`;
                         value={formData.businessName}
                         onChange={(e) => setFormData({...formData, businessName: e.target.value})}
                         className="w-full bg-white/5 border border-white/10 rounded-xl px-6 py-4 text-white focus:outline-none focus:border-white/50 focus:bg-white/10 transition-all"
-                        placeholder="Acme Corp"
+                        placeholder="Enter your business name"
                       />
                     </div>
                   </div>

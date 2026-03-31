@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Zap } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const storySequence = [
   "I'm Anuroop Batta — Founder of LUME Branding.",
@@ -57,16 +58,19 @@ export default function About() {
             <AnimatePresence>
               {currentIndex === storySequence.length - 1 && (
                 <div className="flex flex-col md:flex-row gap-4 mt-8">
-                  <motion.a
-                    href="#work"
+                  <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 10 }}
                     transition={{ delay: 0.5, duration: 0.5 }}
-                    className="px-8 py-3 platinum-btn rounded-full font-semibold inline-flex items-center gap-2"
                   >
-                    Explore Our Work
-                  </motion.a>
+                    <Link
+                      to="/work"
+                      className="px-8 py-3 platinum-btn rounded-full font-semibold inline-flex items-center gap-2"
+                    >
+                      Explore Our Work
+                    </Link>
+                  </motion.div>
                   <motion.button
                     onClick={() => window.dispatchEvent(new CustomEvent('open-game'))}
                     initial={{ opacity: 0, y: 20 }}

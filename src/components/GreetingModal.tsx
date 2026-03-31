@@ -55,7 +55,7 @@ export default function GreetingModal() {
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            className="relative w-full max-w-2xl bg-[#0a0a0a] rounded-[3rem] border border-white/10 shadow-2xl overflow-hidden"
+            className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-[#0a0a0a] rounded-[3rem] border border-white/10 shadow-2xl"
           >
             {/* Close Button */}
             <button 
@@ -106,7 +106,7 @@ export default function GreetingModal() {
                           type="text"
                           value={formData.businessName}
                           onChange={(e) => setFormData({...formData, businessName: e.target.value})}
-                          placeholder="Your brand name"
+                          placeholder="Enter your business name"
                           className="w-full bg-white/5 border border-white/10 rounded-2xl py-5 px-6 text-white focus:outline-none focus:border-white/30 transition-all placeholder:text-white/10 text-lg"
                         />
                       </div>
@@ -117,7 +117,7 @@ export default function GreetingModal() {
                           type="text"
                           value={formData.contact}
                           onChange={(e) => setFormData({...formData, contact: e.target.value})}
-                          placeholder="Email or Phone"
+                          placeholder="Enter your contact information"
                           className="w-full bg-white/5 border border-white/10 rounded-2xl py-5 px-6 text-white focus:outline-none focus:border-white/30 transition-all placeholder:text-white/10 text-lg"
                         />
                       </div>

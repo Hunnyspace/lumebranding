@@ -1,4 +1,5 @@
 import { Linkedin, Instagram, Facebook, ArrowUpRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export default function Footer() {
   return (
@@ -33,13 +34,13 @@ export default function Footer() {
         <div className="space-y-6">
           <h4 className="text-white font-semibold uppercase tracking-widest text-sm">Navigation</h4>
           <ul className="space-y-4">
-            {['Home', 'Services', 'Work', 'Founder', 'Contact'].map((link) => (
-              <li key={link}>
-                <a href={`#${link.toLowerCase()}`} className="text-white/50 hover:text-white transition-colors">
-                  {link}
-                </a>
-              </li>
-            ))}
+            <li><Link to="/" className="text-white/50 hover:text-white transition-colors">Home</Link></li>
+            <li><Link to="/services" className="text-white/50 hover:text-white transition-colors">Services</Link></li>
+            <li><Link to="/work" className="text-white/50 hover:text-white transition-colors">Work</Link></li>
+            <li><Link to="/creators" className="text-white/50 hover:text-white transition-colors">Creators</Link></li>
+            <li><Link to="/refer" className="text-white/50 hover:text-white transition-colors">Refer & Earn</Link></li>
+            <li><Link to="/careers" className="text-white/50 hover:text-white transition-colors">Careers</Link></li>
+            <li><Link to="/contact" className="text-white/50 hover:text-white transition-colors">Contact</Link></li>
           </ul>
         </div>
 
